@@ -165,6 +165,7 @@
                 for (var i in list){
 						var editBtn = document.getElementsByClassName('edit')[i]
                         var deleteBtn = document.getElementsByClassName('delete')[i]
+						var title = document.getElementsByClassName('title')[i]
 
 					    editBtn.addEventListener('click', (function(item){
 							return function(){
@@ -176,6 +177,12 @@
 						return function(){
 							deleteItem(item)
 						    }
+					    })(list[i]))
+
+						title.addEventListener('click', (function(item){
+						return function(){
+							strikeUnstrike(item)
+						}
 					    })(list[i]))
 
 					}    
@@ -223,6 +230,22 @@
 					'Content-type':'application/json',
 					'X-CSRFToken':csrftoken,
 				}
+			}).then((response) => {
+				buildList()
+			})
+		}
+
+		function strikeUnstrike(item){
+			console.log('Strike clicked')
+
+			item.completed = !item.completed
+			fetch(`http://127.0.0.1:8000/api/task-update/${item.id}/`, {
+				method:'POST', 
+				headers:{
+					'Content-type':'application/json',
+					'X-CSRFToken':csrftoken,
+				},
+				body:JSON.stringify({'title':item.title, 'completed':item.completed})
 			}).then((response) => {
 				buildList()
 			})
