@@ -1,2 +1,2 @@
-# task-api
-task-api using django rest framework
+# todo-app
+todo-app using django rest framework and ajax 
